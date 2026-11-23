@@ -5,7 +5,7 @@
   <h1>High-speed Pulse Generator for a Walking Crab Robot</h1>
   <p class="lede">A custom SCOMP peripheral that turns ordinary OUT instructions into safe, correctly timed PWM signals for four hobby servos.</p>
   <ul class="tags"><li>VHDL</li><li>SCOMP assembly</li><li>Quartus</li><li>Cyclone V FPGA</li></ul>
-  <div class="meta"><div><span>Course</span><strong>ECE 2031 - Digital Design Laboratory, team of three</strong></div><div><span>Completed</span><strong>May 2026</strong></div><div><span>My role</span><strong>SCOMP control program and DE10 integration testing</strong></div></div>
+  <div class="meta"><div><span>Course</span><strong>ECE 2031 - Digital Design Laboratory, team of three</strong></div><div><span>Timeline</span><strong>April 2026 to May 2026</strong></div><div><span>My role</span><strong>SCOMP control program and DE10 integration testing</strong></div></div>
   <figure><div class="shot"><img src="images/hspg-crab.jpg" alt="the crab robot or the DE10 board" onerror="this.replaceWith(document.createTextNode('Add images/hspg-crab.jpg: the crab robot or the DE10 board'))"></div><figcaption>Hero image: the crab robot, or the board running the demo</figcaption></figure>
   <h2>Overview</h2>
   <p class="muted">SCOMP, the simple processor used in ECE 2031, has no PWM hardware, and hobby servos need a pulse every 20 ms whose width sets the angle. Our team designed the High-Speed Pulse Generator (HSPG), a VHDL peripheral on a DE10-Standard board that lets SCOMP drive four servos on a four-legged crab robot using four I/O addresses (0x50 to 0x53), one per leg.</p>
