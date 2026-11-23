@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><title>Walking crab pulse generator | Caleb Onuoha</title></head><body>
+<header><div class="wrap"><a class="name" href="index.html">Caleb Onuoha</a><nav aria-label="Primary"><a href="projects.html" aria-current="page">Projects</a><a href="about.html">About</a><a href="resume.html">Résumé</a><a href="about.html#contact">Contact</a></nav></div></header>
+<main><div class="wrap case" style="padding-top:56px;padding-bottom:64px">
+  <a class="back" href="projects.html">← All projects</a>
+  <h1>High-speed pulse generator for a walking crab robot</h1>
+  <p class="lede">A custom SCOMP peripheral that turns ordinary OUT instructions into safe, correctly timed PWM signals for four hobby servos.</p>
+  <ul class="tags"><li>VHDL</li><li>SCOMP assembly</li><li>Quartus</li><li>Cyclone V FPGA</li></ul>
+  <div class="meta"><div><span>Course</span><strong>ECE 2031, team of three</strong></div><div><span>Completed</span><strong>May 2026</strong></div><div><span>My role</span><strong>SCOMP control program and DE10 integration testing</strong></div></div>
+  <figure><div class="shot"><img src="images/hspg-crab.jpg" alt="the crab robot or the DE10 board" onerror="this.replaceWith(document.createTextNode('Add images/hspg-crab.jpg: the crab robot or the DE10 board'))"></div><figcaption>Hero image: the crab robot, or the board running the demo</figcaption></figure>
+  <h2>Overview</h2>
+  <p class="muted">SCOMP, the simple processor used in ECE 2031, has no PWM hardware, and hobby servos need a pulse every 20 ms whose width sets the angle. Our team designed the High-Speed Pulse Generator (HSPG), a VHDL peripheral on a DE10-Standard board that lets SCOMP drive four servos on a four-legged crab robot using four I/O addresses (0x50 to 0x53), one per leg.</p>
+  <h2>How it works</h2>
+  <ul class="list">
+    <li>Each address latches a 16-bit mode value. The bottom two bits pick stop or one of three walking-speed modes (small, medium, or large sweep).</li>
+    <li>A shared 10 kHz clock produces a 20 ms PWM period. Four independent four-phase state machines run the legs, with the back pair offset by one phase from the front pair so the crab moves forward.</li>
+    <li>A hardware safety clamp limits every pulse to 0.6 to 2.4 ms. No value SCOMP writes can drive a servo into a stall.</li>
+  </ul>
+  <figure><div class="shot"><img src="images/hspg-block-diagram.png" alt="block diagram of the HSPG peripheral" onerror="this.replaceWith(document.createTextNode('Add images/hspg-block-diagram.png: block diagram of the HSPG peripheral'))"></div><figcaption>Block diagram: mode registers, shared period counter, four gait state machines, safety clamp, PWM outputs</figcaption></figure>
+  <h2>Key design decision</h2>
+  <p class="muted">We started with a single shared register and one state machine, then split it into four mode registers with four state machines. That made each leg individually controllable and kept the SCOMP code short: updating all four legs takes four OUT instructions and no extra state. It was the biggest change of the project and took most of the final week, but it makes backward walking and turning straightforward additions.</p>
+  <h2>My contribution</h2>
+  <ul class="list">
+    <li>Wrote the SCOMP assembly test program that reads the board switches and sends the mode value to all four servo addresses.</li>
+    <li>Brought up and tested the design on the DE10 board, and integrated the per-leg registers into the SCOMP system.</li>
+    <li>With my teammates, Ava Sadasivan and Anderson Gao (who led the VHDL), I helped build the crab chassis, wire the servos, and take the oscilloscope timing measurements.</li>
+  </ul>
+  <h2>Results</h2>
+  <ul class="list">
+    <li>All three speed modes were verified on an oscilloscope, and the measured pulse widths on the four output pins matched the design values. Working servos weren't available for the final demo, so the scope showed the signals the servos would receive.</li>
+    <li>No output pulse ever left the 0.6 to 2.4 ms safe range, including when we deliberately wrote unexpected mode values.</li>
+    <li>The full system used about 2% of the FPGA's logic.</li>
+    <li>Backward walking and turning were planned but deferred to focus on getting the forward gait right.</li>
+  </ul>
+  <figure><div class="shot"><img src="images/hspg-oscilloscope.jpg" alt="oscilloscope capture of the PWM signals" onerror="this.replaceWith(document.createTextNode('Add images/hspg-oscilloscope.jpg: oscilloscope capture of the PWM signals'))"></div><figcaption>Oscilloscope capture of the servo pulses in one of the speed modes</figcaption></figure>
+  <h2>What I learned</h2>
+  <p class="muted">Probing the PWM outputs with an oscilloscope early exposed a one-frame off-by-one error that the servos' mechanical inertia had hidden. Next time I'd scope from the first day and commit to the four-register design in week one. Keeping the working version in version control also let us make the big change without risking finished work.</p>
+</div></main>
+<footer>Caleb Onuoha · Georgia Tech Electrical Engineering</footer>
+</body></html>
