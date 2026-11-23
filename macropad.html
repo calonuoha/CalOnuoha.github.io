@@ -8,15 +8,29 @@
   <div class="meta"><div><span>Type</span><strong>Self-directed hardware project</strong></div><div><span>Timeline</span><strong>July 2026 to present</strong></div><div><span>Status</span><strong>Layout complete, fabrication planned</strong></div></div>
   <figure><div class="shot"><img src="images/macropad.jpg" alt="finished macro pad or 3D render" onerror="this.replaceWith(document.createTextNode('Add images/macropad.jpg: finished macro pad or 3D render'))"></div><figcaption>Hero image: 3D render from KiCad or a photo of the board</figcaption></figure>
   <h2>Overview</h2>
-  <p class="muted">I designed an 8-key mechanical macro pad as a self-directed project, covering the full path from circuit prototype to board layout. [Add one sentence on why you built it.]</p>
+  <p class="muted">I designed this macro pad to turn keyboard shortcuts into single key presses. It's an 8-key board built around a Raspberry Pi Pico that presents itself to the computer as a standard keyboard, so it works without any extra software. The project covers the full hardware design: schematic capture, PCB layout, and design verification in KiCad.</p>
   <h2>Hardware design</h2>
-  <ul class="list"><li>2-layer PCB in KiCad with an integrated Raspberry Pi Pico, a keyswitch layout, and a diode-isolated matrix.</li><li>Hand-routed the traces and verified electrical rules and layout integrity so the layout is ready for production.</li><li>Placed a 1N4148 switching diode on each key to prevent ghosting currents and keep signals clean when several keys are pressed at once.</li></ul>
+  <ul class="list"><li>A 2x4 mechanical key matrix on a 2-layer PCB with an integrated Raspberry Pi Pico.</li><li>Every switch has its own 1N4148 diode, which isolates the keys from each other and prevents ghosting when several keys are pressed at once.</li><li>Rows and columns each get their own pin, so eight keys need only six GPIO pins: two rows and four columns.</li><li>Traces were routed by hand, then checked against KiCad's electrical and design rules.</li></ul>
   <div class="gallery big"><figure><div class="shot"><img src="PCB_Schematic.png" alt="KiCad schematic" onerror="this.replaceWith(document.createTextNode('Add images/macropad-schematic.png: KiCad schematic'))"></div><figcaption>Schematic</figcaption></figure> <figure><div class="shot"><img src="PCB_Layout.png" alt="PCB layout" onerror="this.replaceWith(document.createTextNode('Add images/macropad-layout.png: PCB layout'))"></div><figcaption>PCB layout</figcaption></figure></div>
   <h2>Firmware</h2>
-  <p class="muted">The Pico scans the key matrix by rows and columns, so eight keys need only six GPIO pins: each row and each column has its own pin. I prototyped the circuit in Wokwi and wrote Arduino firmware for the shortcuts. [Add how you tested it.]</p>
-  <h2>Results and next steps</h2>
+  <p class="muted">The Pico drives the rows as outputs, strobing them one at a time in a loop, while the columns are read as inputs. When a key is pressed, current flows through its diode into the row it belongs to, which tells the microcontroller exactly which key was pressed so it can send the matching shortcut.</p>
+  <h2>Results</h2>
   <p class="muted">The fabrication process has begun, I need to add the conductive wiring from the second layer of the board to the back of the board so all connections are in place. The next step will be to aquire the necessary components and attach them to the board, completing the physical connections. I will also have to wire any necessary components. The final step would be to fully formulate and test the code, ensuring that the macropad works and marking the completion of this project.</p>
+  <ul class="list">
+    <li>Schematic capture and PCB layout are complete in KiCad.</li>
+    <li>All electrical rule checks and design rule checks pass, confirming the hand-routed traces and a production-ready 2-layer layout.</li>
+    <li>In the design, the diode matrix resolves the routing and prevents ghosting between keys.</li>
+    <li>Physical fabrication has not been completed.</li>
+  </ul>
+
+  <h2>Next steps</h2>
+  <ul class="list">
+    <li>Write the firmware that sends each key's shortcut.</li>
+    <li>Complete fabrication and assembly of the PCB.</li>
+    <li>Later: Expand and add more shortcuts and a printed enclosure to house and protect the board.</li>
+  </ul>
   <div class="actions"><a class="btn primary" href="MacroPad_WriteUp.pdf" target="_blank" rel="noopener">Read the 2-page Technical Write-up</a>
 </div></main>
 <footer>Caleb Onuoha · Georgia Tech Electrical Engineering</footer>
 </body></html>
+
